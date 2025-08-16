@@ -1,0 +1,239 @@
+# ========================================
+# GITIGNORE PARA WHATSAPP SENDER PRO
+# ========================================
+
+# ========================================
+# ARCHIVOS Y CARPETAS DE SISTEMA
+# ========================================
+
+# Archivos del sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ========================================
+# CARPETAS DE SESIÓN Y DATOS TEMPORALES
+# ========================================
+
+# Carpeta de sesión de WhatsApp Web (NO SUBIR)
+whatsapp_session/
+whatsapp_session/*
+
+# Archivo de progreso (NO SUBIR)
+progreso.json
+
+# ========================================
+# ARCHIVOS DE DATOS SENSIBLES
+# ========================================
+
+# Archivos Excel con datos de clientes (NO SUBIR)
+*.xlsx
+*.xls
+*.csv
+
+# Archivos de configuración con datos sensibles
+config.json
+settings.json
+*.env
+
+# ========================================
+# ARCHIVOS DE PYTHON
+# ========================================
+
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribución / empaquetado
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unidades de instalación de Python
+pip-wheel-metadata/
+share/python-wheels/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# ========================================
+# ENTORNOS VIRTUALES
+# ========================================
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# ========================================
+# IDEs Y EDITORES
+# ========================================
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+
+# ========================================
+# LOGS Y ARCHIVOS DE DEBUG
+# ========================================
+
+# Archivos de log
+*.log
+logs/
+log/
+
+# Archivos de debug
+debug.log
+error.log
+
+# ========================================
+# ARCHIVOS DE CHROME/SELENIUM
+# ========================================
+
+# ChromeDriver (se descarga automáticamente)
+chromedriver.exe
+chromedriver
+*.exe
+
+# Archivos de Chrome
+chrome_user_data/
+chrome_temp/
+
+# ========================================
+# ARCHIVOS DE BACKUP
+# ========================================
+
+# Archivos de backup
+*.bak
+*.backup
+*.old
+*.orig
+
+# ========================================
+# ARCHIVOS DE TESTING
+# ========================================
+
+# Archivos de prueba
+test_*.py
+*_test.py
+tests/
+testing/
+
+# ========================================
+# ARCHIVOS DE DOCUMENTACIÓN TEMPORAL
+# ========================================
+
+# Archivos de documentación temporal
+*.md~
+*.txt~
+docs/temp/
+
+# ========================================
+# ARCHIVOS ESPECÍFICOS DEL PROYECTO
+# ========================================
+
+# Archivos de plantillas personalizadas (opcional - decidir si subir)
+# plantillas_personalizadas.json
+# configuracion_local.json
+
+# Archivos de estadísticas temporales
+estadisticas_temp.json
+reportes_temp/
+
+# ========================================
+# ARCHIVOS DE SEGURIDAD
+# ========================================
+
+# Archivos con información sensible
+*password*
+*secret*
+*key*
+*token*
+*.pem
+*.key
+*.crt
+
+# ========================================
+# ARCHIVOS DE COMPRESIÓN
+# ========================================
+
+# Archivos comprimidos
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar.bz2
+
+# ========================================
+# ARCHIVOS DE MEDIA
+# ========================================
+
+# Archivos de imagen (excepto logos del proyecto)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.ico
+# !logo.png  # Descomenta si quieres incluir logos específicos
+
+# Archivos de video
+*.mp4
+*.avi
+*.mov
+*.wmv
+
+# Archivos de audio
+*.mp3
+*.wav
+*.ogg
