@@ -357,71 +357,79 @@ class WhatsAppSenderGUIMejorado:
                  font=("Segoe UI", 9, "bold"), bg="#e91e63", fg="white",
                  relief="flat", bd=0, padx=15, pady=5).grid(row=0, column=4)
         
+        # Botón para mostrar información de configuración de columnas
+        tk.Button(btn_frame, text="📋 Info Columnas", command=self.mostrar_info_columnas,
+                 font=("Segoe UI", 9, "bold"), bg="#607d8b", fg="white",
+                 relief="flat", bd=0, padx=15, pady=5).grid(row=0, column=5)
+    
     def create_config_section(self, parent):
         """Sección de configuración"""
         config_frame = ttk.LabelFrame(parent, text="⚙️ Configuración", style='Section.TLabelframe')
         config_frame.grid(row=2, column=0, sticky="ew", padx=15, pady=8)
         
-        # Delays
-        delay_frame = tk.Frame(config_frame, bg="#ffffff")
-        delay_frame.grid(row=0, column=0, sticky="ew", padx=15, pady=15)
+        # Frame principal más compacto
+        main_config_frame = tk.Frame(config_frame, bg="#ffffff")
+        main_config_frame.grid(row=0, column=0, sticky="ew", padx=15, pady=10)
         config_frame.grid_columnconfigure(0, weight=1)
         
-        tk.Label(delay_frame, text="Delay mínimo (seg):", 
+        # Delays en una sola fila
+        delay_frame = tk.Frame(main_config_frame, bg="#ffffff")
+        delay_frame.grid(row=0, column=0, sticky="ew", pady=(0, 8))
+        main_config_frame.grid_columnconfigure(0, weight=1)
+        
+        tk.Label(delay_frame, text="Delay (seg):", 
                 font=("Segoe UI", 10, "bold"), bg="#ffffff", fg="#202124").grid(row=0, column=0, sticky="w")
         
-        min_delay = tk.Entry(delay_frame, textvariable=self.delay_min,
-                            font=("Segoe UI", 10), bg="#ffffff", fg="#202124",
-                            relief="solid", bd=1, width=10)
-        min_delay.grid(row=1, column=0, sticky="w", pady=(5, 10))
+        tk.Label(delay_frame, text="Mín:", 
+                font=("Segoe UI", 9), bg="#ffffff", fg="#5f6368").grid(row=0, column=1, sticky="w", padx=(15, 5))
         
-        tk.Label(delay_frame, text="Delay máximo (seg):", 
-                font=("Segoe UI", 10, "bold"), bg="#ffffff", fg="#202124").grid(row=2, column=0, sticky="w")
+        min_delay = tk.Entry(delay_frame, textvariable=self.delay_min,
+                            font=("Segoe UI", 9), bg="#ffffff", fg="#202124",
+                            relief="solid", bd=1, width=8)
+        min_delay.grid(row=0, column=2, sticky="w", padx=(0, 10))
+        
+        tk.Label(delay_frame, text="Máx:", 
+                font=("Segoe UI", 9), bg="#ffffff", fg="#5f6368").grid(row=0, column=3, sticky="w", padx=(0, 5))
         
         max_delay = tk.Entry(delay_frame, textvariable=self.delay_max,
-                            font=("Segoe UI", 10), bg="#ffffff", fg="#202124",
-                            relief="solid", bd=1, width=10)
-        max_delay.grid(row=3, column=0, sticky="w", pady=(5, 10))
+                            font=("Segoe UI", 9), bg="#ffffff", fg="#202124",
+                            relief="solid", bd=1, width=8)
+        max_delay.grid(row=0, column=4, sticky="w")
+        
+        # Opciones en una sola fila
+        options_frame = tk.Frame(main_config_frame, bg="#ffffff")
+        options_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
         
         # Opción para números extranjeros
-        extranjeros_frame = tk.Frame(config_frame, bg="#ffffff")
-        extranjeros_frame.grid(row=1, column=0, sticky="ew", padx=15, pady=(0, 15))
-        
-        extranjeros_check = tk.Checkbutton(extranjeros_frame, 
-                                          text="🌍 Incluir números extranjeros",
+        extranjeros_check = tk.Checkbutton(options_frame, 
+                                          text="🌍 Números extranjeros",
                                           variable=self.numeros_extranjeros,
-                                          font=("Segoe UI", 10, "bold"),
+                                          font=("Segoe UI", 9, "bold"),
                                           bg="#ffffff", fg="#202124",
                                           selectcolor="#e8f0fe",
                                           activebackground="#ffffff",
                                           activeforeground="#202124")
-        extranjeros_check.grid(row=0, column=0, sticky="w")
-        
-        # Información sobre números extranjeros
-        info_label = tk.Label(extranjeros_frame,
-                             text="Reconoce números de 10-15 dígitos con códigos de país",
-                             font=("Segoe UI", 8), bg="#ffffff", fg="#5f6368")
-        info_label.grid(row=1, column=0, sticky="w", pady=(2, 0))
+        extranjeros_check.grid(row=0, column=0, sticky="w", padx=(0, 20))
         
         # Opción para consolidar duplicados
-        consolidar_frame = tk.Frame(config_frame, bg="#ffffff")
-        consolidar_frame.grid(row=2, column=0, sticky="ew", padx=15, pady=(0, 15))
-        
-        consolidar_check = tk.Checkbutton(consolidar_frame, 
-                                         text="🔗 Consolidar reservas duplicadas",
+        consolidar_check = tk.Checkbutton(options_frame, 
+                                         text="🔗 Consolidar duplicados",
                                          variable=self.consolidar_duplicados,
-                                         font=("Segoe UI", 10, "bold"),
+                                         font=("Segoe UI", 9, "bold"),
                                          bg="#ffffff", fg="#202124",
                                          selectcolor="#e8f0fe",
                                          activebackground="#ffffff",
                                          activeforeground="#202124")
-        consolidar_check.grid(row=0, column=0, sticky="w")
+        consolidar_check.grid(row=0, column=1, sticky="w")
         
-        # Información sobre consolidación
-        consolidar_info = tk.Label(consolidar_frame,
-                                  text="Agrupa múltiples reservas del mismo cliente por día en un solo mensaje",
-                                  font=("Segoe UI", 8), bg="#ffffff", fg="#5f6368")
-        consolidar_info.grid(row=1, column=0, sticky="w", pady=(2, 0))
+        # Información compacta
+        info_frame = tk.Frame(main_config_frame, bg="#ffffff")
+        info_frame.grid(row=2, column=0, sticky="ew")
+        
+        info_label = tk.Label(info_frame,
+                             text="💡 Números extranjeros: 10-15 dígitos | Consolidar: Agrupa reservas del mismo cliente",
+                             font=("Segoe UI", 8), bg="#ffffff", fg="#5f6368")
+        info_label.grid(row=0, column=0, sticky="w")
     
     def create_controls_section(self, parent):
         """Sección de controles"""
@@ -578,6 +586,12 @@ class WhatsAppSenderGUIMejorado:
         
         try:
             self.log_message("🔍 Analizando archivo Excel...")
+            
+            # Verificar si es una plantilla de recogida y mostrar información de columnas
+            plantilla_actual = self.plantilla_actual.get()
+            if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+                self._mostrar_info_columnas_vuelo()
+            
             self.contactos = self.obtener_contactos_con_telefono()
             
             if len(self.contactos) == 0:
@@ -605,6 +619,28 @@ class WhatsAppSenderGUIMejorado:
         except Exception as e:
             self.log_message(f"❌ Error analizando datos: {str(e)}")
             messagebox.showerror("Error", f"Error analizando datos: {str(e)}")
+    
+    def _mostrar_info_columnas_vuelo(self):
+        """Mostrar información sobre las columnas de vuelo disponibles"""
+        try:
+            df = pd.read_excel(self.excel_path.get())
+            
+            # Buscar columnas que contengan "VUELTA" o "VUELO"
+            columnas_vuelo = [col for col in df.columns if "VUELTA" in col.upper() or "VUELO" in col.upper()]
+            
+            if columnas_vuelo:
+                self.log_message(f"📋 Columnas de vuelo encontradas: {', '.join(columnas_vuelo)}")
+                
+                # Mostrar algunos ejemplos de valores
+                for columna in columnas_vuelo[:2]:  # Solo las primeras 2 columnas
+                    valores_ejemplo = df[columna].dropna().head(3).tolist()
+                    self.log_message(f"    📊 Ejemplos en '{columna}': {valores_ejemplo}")
+            else:
+                self.log_message("⚠️ No se encontraron columnas con 'VUELTA' o 'VUELO'")
+                self.log_message("    🔄 Se usará la columna 'NIF' como respaldo")
+                
+        except Exception as e:
+            self.log_message(f"⚠️ Error analizando columnas de vuelo: {str(e)}")
     
     def obtener_contactos_con_telefono(self):
         """
@@ -661,10 +697,18 @@ class WhatsAppSenderGUIMejorado:
     
     def _log_configuracion_numeros(self):
         """Registrar configuración de números en el log"""
+        plantilla_actual = self.plantilla_actual.get()
+        
         if self.numeros_extranjeros.get():
             self.log_message("🌍 Reconocimiento de números extranjeros: HABILITADO")
         else:
             self.log_message("🇪🇸 Solo números españoles: HABILITADO")
+        
+        # Informar sobre la columna de teléfono según la plantilla
+        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            self.log_message("📞 Plantilla de recogida detectada: Buscando números en columna 'Nº Vuelo VUELTA'")
+        else:
+            self.log_message("📞 Plantilla normal: Buscando números en columna 'NIF'")
     
     def _procesar_formato_especial(self, df):
         """Procesar archivo con formato especial (todas las columnas en una sola)"""
@@ -705,7 +749,31 @@ class WhatsAppSenderGUIMejorado:
         
         # Extraer datos según el orden: [Agencia, Cliente, NIF, Matricula, Vehiculo, Ocup., ...]
         nombre = datos[1].strip() if len(datos) > 1 else f"Cliente {index+1}"
-        nif_campo = datos[2].strip() if len(datos) > 2 else ""
+        
+        # Determinar de qué columna extraer el teléfono según la plantilla seleccionada
+        plantilla_actual = self.plantilla_actual.get()
+        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            # Para plantillas de recogida, buscar en "Nº Vuelo VUELTA"
+            # Asumiendo que está en una posición específica del formato especial
+            # Buscar en todas las columnas que contengan "VUELTA" o números de vuelo
+            nif_campo = ""
+            for i, dato in enumerate(datos):
+                dato_limpio = dato.strip().upper()
+                if "VUELTA" in dato_limpio or "VUELO" in dato_limpio:
+                    # Extraer número de teléfono del campo de vuelo
+                    nif_campo = self._extraer_numero_telefono_vuelo(dato)
+                    if nif_campo:
+                        self.log_message(f"    📞 Número extraído de columna de vuelo: {nif_campo}")
+                        break
+            
+            # Si no se encontró en campos de vuelo, usar el campo NIF como respaldo
+            if not nif_campo:
+                nif_campo = datos[2].strip() if len(datos) > 2 else ""
+                self.log_message(f"    ⚠️ Usando campo NIF como respaldo: {nif_campo}")
+        else:
+            # Para otras plantillas, usar el campo NIF normal
+            nif_campo = datos[2].strip() if len(datos) > 2 else ""
+        
         matricula = datos[3].strip() if len(datos) > 3 else "Sin matrícula"
         ocupantes = datos[5].strip() if len(datos) > 5 else "Sin especificar"
         
@@ -724,7 +792,36 @@ class WhatsAppSenderGUIMejorado:
         """Extraer contacto del formato normal de Excel"""
         # Obtener datos de las columnas correspondientes
         nombre = str(df.iloc[index]['Cliente']).strip() if 'Cliente' in df.columns else f"Cliente {index+1}"
-        nif_campo = str(df.iloc[index]['NIF']).strip() if 'NIF' in df.columns else ""
+        
+        # Determinar de qué columna extraer el teléfono según la plantilla seleccionada
+        plantilla_actual = self.plantilla_actual.get()
+        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            # Para plantillas de recogida, buscar en "Nº Vuelo VUELTA"
+            nif_campo = ""
+            
+            # Buscar columnas que contengan "VUELTA" o "VUELO"
+            columnas_vuelo = [col for col in df.columns if "VUELTA" in col.upper() or "VUELO" in col.upper()]
+            
+            if columnas_vuelo:
+                # Usar la primera columna de vuelo encontrada
+                columna_vuelo = columnas_vuelo[0]
+                valor_vuelo = df.iloc[index][columna_vuelo]
+                if pd.notna(valor_vuelo):
+                    # Extraer números de teléfono del campo de vuelo
+                    nif_campo = self._extraer_numero_telefono_vuelo(str(valor_vuelo))
+                    if nif_campo:
+                        self.log_message(f"    📞 Número extraído de '{columna_vuelo}': {nif_campo}")
+                    else:
+                        self.log_message(f"    ⚠️ No se pudo extraer número válido de '{columna_vuelo}': {valor_vuelo}")
+            
+            # Si no se encontró en campos de vuelo, usar el campo NIF como respaldo
+            if not nif_campo:
+                nif_campo = str(df.iloc[index]['NIF']).strip() if 'NIF' in df.columns else ""
+                self.log_message(f"    ⚠️ Usando campo NIF como respaldo: {nif_campo}")
+        else:
+            # Para otras plantillas, usar el campo NIF normal
+            nif_campo = str(df.iloc[index]['NIF']).strip() if 'NIF' in df.columns else ""
+        
         matricula = str(df.iloc[index]['Matricula']).strip() if 'Matricula' in df.columns else "Sin matrícula"
         
         # Obtener hora de entrada
@@ -936,9 +1033,15 @@ class WhatsAppSenderGUIMejorado:
         plantilla = obtener_plantilla(self.plantilla_actual.get())
         self.template_text.delete(1.0, tk.END)
         self.template_text.insert(1.0, plantilla)
-        self.log_message(f"📝 Plantilla cargada: {self.plantilla_actual.get()}")
-    
-
+        
+        # Mostrar información sobre la columna de teléfono según la plantilla
+        plantilla_actual = self.plantilla_actual.get()
+        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            self.log_message(f"📝 Plantilla cargada: {self.plantilla_actual.get()} (Recogida)")
+            self.log_message("📞 Configuración: Buscando números en columna 'Nº Vuelo VUELTA'")
+        else:
+            self.log_message(f"📝 Plantilla cargada: {self.plantilla_actual.get()}")
+            self.log_message("📞 Configuración: Buscando números en columna 'NIF'")
     
     def restore_template(self):
         """Restaurar plantilla original"""
@@ -2327,6 +2430,185 @@ class WhatsAppSenderGUIMejorado:
         }
         
         return contacto_consolidado
+    
+    def mostrar_info_columnas(self):
+        """Mostrar información detallada sobre la configuración de columnas"""
+        try:
+            plantilla_actual = self.plantilla_actual.get()
+            
+            # Crear ventana de información
+            info_window = tk.Toplevel(self.root)
+            info_window.title("📋 Información de Configuración de Columnas")
+            info_window.geometry("700x500")
+            info_window.configure(bg="#ffffff")
+            
+            # Frame principal
+            main_frame = tk.Frame(info_window, bg="#ffffff")
+            main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+            
+            # Título
+            titulo = tk.Label(main_frame, 
+                             text="📋 Configuración de Columnas por Plantilla",
+                             font=("Segoe UI", 16, "bold"),
+                             bg="#ffffff", fg="#1a73e8")
+            titulo.pack(pady=(0, 20))
+            
+            # Información de la plantilla actual
+            plantilla_frame = tk.LabelFrame(main_frame, text="🎯 Plantilla Actual", 
+                                          font=("Segoe UI", 12, "bold"), bg="#ffffff")
+            plantilla_frame.pack(fill=tk.X, pady=(0, 15))
+            
+            plantilla_info = tk.Label(plantilla_frame, 
+                                     text=f"Plantilla seleccionada: {plantilla_actual}",
+                                     font=("Segoe UI", 11), bg="#ffffff", fg="#202124")
+            plantilla_info.pack(padx=15, pady=10)
+            
+            # Configuración de columnas
+            config_frame = tk.LabelFrame(main_frame, text="📊 Configuración de Columnas", 
+                                       font=("Segoe UI", 12, "bold"), bg="#ffffff")
+            config_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
+            
+            if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+                config_text = """📞 COLUMNA PRINCIPAL: 'Nº Vuelo VUELTA'
+• Busca automáticamente columnas que contengan 'VUELTA' o 'VUELO'
+• Extrae solo los números del campo
+• Requiere mínimo 9 dígitos para ser válido
+
+🔄 COLUMNA DE RESPALDO: 'NIF'
+• Se usa si no se encuentra columna de vuelo
+• Se usa si la columna de vuelo no contiene número válido
+
+📋 OTRAS COLUMNAS:
+• Nombre: Columna 'Cliente'
+• Matrícula: Columna 'Matricula'
+• Hora: Columna 'Hora entrada'
+• Fecha: Columna 'Fecha entrada'"""
+            else:
+                config_text = """📞 COLUMNA PRINCIPAL: 'NIF'
+• Campo estándar para números de teléfono
+• Soporte para números españoles e internacionales
+
+📋 OTRAS COLUMNAS:
+• Nombre: Columna 'Cliente'
+• Matrícula: Columna 'Matricula'
+• Hora: Columna 'Hora entrada'
+• Fecha: Columna 'Fecha entrada'"""
+            
+            config_label = tk.Label(config_frame, text=config_text,
+                                   font=("Segoe UI", 10), bg="#ffffff", fg="#202124",
+                                   justify=tk.LEFT)
+            config_label.pack(padx=15, pady=15)
+            
+            # Información del archivo actual (si está cargado)
+            if self.excel_path.get():
+                archivo_frame = tk.LabelFrame(main_frame, text="📁 Archivo Actual", 
+                                            font=("Segoe UI", 12, "bold"), bg="#ffffff")
+                archivo_frame.pack(fill=tk.X, pady=(0, 15))
+                
+                try:
+                    df = pd.read_excel(self.excel_path.get())
+                    columnas_disponibles = list(df.columns)
+                    
+                    # Buscar columnas relevantes
+                    columnas_vuelo = [col for col in columnas_disponibles if "VUELTA" in col.upper() or "VUELO" in col.upper()]
+                    columnas_nif = [col for col in columnas_disponibles if "NIF" in col.upper()]
+                    
+                    archivo_info = f"Archivo: {os.path.basename(self.excel_path.get())}\n"
+                    archivo_info += f"Total columnas: {len(columnas_disponibles)}\n"
+                    
+                    if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+                        if columnas_vuelo:
+                            archivo_info += f"✅ Columnas de vuelo encontradas: {', '.join(columnas_vuelo)}\n"
+                        else:
+                            archivo_info += "⚠️ No se encontraron columnas de vuelo\n"
+                    
+                    if columnas_nif:
+                        archivo_info += f"📞 Columnas NIF encontradas: {', '.join(columnas_nif)}\n"
+                    else:
+                        archivo_info += "⚠️ No se encontraron columnas NIF\n"
+                    
+                    archivo_label = tk.Label(archivo_frame, text=archivo_info,
+                                           font=("Segoe UI", 10), bg="#ffffff", fg="#202124",
+                                           justify=tk.LEFT)
+                    archivo_label.pack(padx=15, pady=10)
+                    
+                except Exception as e:
+                    error_label = tk.Label(archivo_frame, 
+                                          text=f"Error leyendo archivo: {str(e)}",
+                                          font=("Segoe UI", 10), bg="#ffffff", fg="#ea4335")
+                    error_label.pack(padx=15, pady=10)
+            else:
+                archivo_label = tk.Label(main_frame, 
+                                       text="📁 No hay archivo Excel cargado",
+                                       font=("Segoe UI", 10), bg="#ffffff", fg="#5f6368")
+                archivo_label.pack(pady=10)
+            
+            # Botón cerrar
+            cerrar_btn = tk.Button(main_frame, text="Cerrar",
+                                  command=info_window.destroy,
+                                  font=("Segoe UI", 10, "bold"), bg="#1a73e8", fg="white",
+                                  relief="flat", bd=0, padx=20, pady=8)
+            cerrar_btn.pack(pady=10)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error mostrando información: {str(e)}")
+    
+    def _extraer_numero_telefono_vuelo(self, valor_vuelo):
+        """
+        Extraer número de teléfono de un campo de vuelo que puede contener texto mezclado.
+        
+        Args:
+            valor_vuelo (str): Valor del campo de vuelo (ej: 'T4-T4-IB23677-609553462')
+            
+        Returns:
+            str: Número de teléfono extraído o cadena vacía si no se encuentra
+        """
+        try:
+            if not valor_vuelo or valor_vuelo == 'nan':
+                return ""
+            
+            valor_limpio = str(valor_vuelo).strip()
+            
+            # Buscar secuencias de 9 o más dígitos consecutivos
+            import re
+            
+            # Patrón 1: Buscar números de 9+ dígitos al final del string
+            patron_final = r'(\d{9,})$'
+            match_final = re.search(patron_final, valor_limpio)
+            if match_final:
+                numero = match_final.group(1)
+                if self.es_telefono_valido(numero):
+                    return numero
+            
+            # Patrón 2: Buscar números de 9+ dígitos precedidos por espacios o guiones
+            patron_espaciado = r'[-\s](\d{9,})'
+            match_espaciado = re.search(patron_espaciado, valor_limpio)
+            if match_espaciado:
+                numero = match_espaciado.group(1)
+                if self.es_telefono_valido(numero):
+                    return numero
+            
+            # Patrón 3: Buscar cualquier secuencia de 9+ dígitos
+            patron_general = r'(\d{9,})'
+            matches = re.findall(patron_general, valor_limpio)
+            for numero in matches:
+                if self.es_telefono_valido(numero):
+                    return numero
+            
+            # Si no se encuentra con patrones, intentar extraer todos los dígitos
+            todos_digitos = ''.join(filter(str.isdigit, valor_limpio))
+            if len(todos_digitos) >= 9:
+                # Buscar la secuencia más larga de dígitos consecutivos
+                secuencias = re.findall(r'\d+', valor_limpio)
+                for secuencia in secuencias:
+                    if len(secuencia) >= 9 and self.es_telefono_valido(secuencia):
+                        return secuencia
+            
+            return ""
+            
+        except Exception as e:
+            self.log_message(f"    ⚠️ Error extrayendo número de vuelo: {str(e)}")
+            return ""
 
 def main():
     """Función principal"""
