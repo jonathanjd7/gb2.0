@@ -178,4 +178,4 @@ Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para
 
 ---
 
-**Desarrollado para GO BARAJAS** 🚗✈️ 
+**Desarrollado para GO BARAJAS POR JONATHAN DANILO** 🚗✈️ 
