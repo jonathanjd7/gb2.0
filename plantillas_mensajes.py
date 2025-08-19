@@ -14,7 +14,7 @@ Matrícula registrada: *{matricula}*
 📍 Dirección: Ver ubicación en Google Maps:
 https://goo.gl/maps/bH9XgxPZE4ze8Yaf9
 
-🅿 Elija una plaza libre, recuerde el número de su plaza y pase por la oficina.
+🅿 Elija una plaza que vea libre, recuerde el número de su plaza y pase por la oficina.
 
 📞 Teléfono de contacto: *+34 919 23 73 78*
 Le recomendamos guardarlo en su agenda.
@@ -23,15 +23,21 @@ Gracias por su confianza. ¡Le esperamos!"""
 
 
 
-RECOGIDASTARDES= """Hola buenas Tardes, 
-Les recordamos que hoy les  recogemos **ARRIBA EN LA PLATAFORMA DE SALIDAS de  la Terminal* *1 Puerta 3* || *T2- Puerta 7* || *T4 Puerta 5*|| 🚪 
-Cuando recoja todo el equipaje de la cinta o este de camino al punto de encuentro nos tiene que llamar  *+34 919 237 378* ( *Llamada Normal* 📞,NO WHATSAPP). Gracias.
-(*Avisen si necesitan sillita para niño/bebe* 👶) """
+RECOGIDAS= """Hola 👋,
+Hoy les *RECOGEMOS* en:
+*PLATAFORMA DE SALIDAS*
 
-RECOGIDAMANANA= """Hola buenos dias, 
-Les recordamos que hoy les  recogemos **ARRIBA EN LA PLATAFORMA DE SALIDAS de  la Terminal* *1 Puerta 3* || *T2- Puerta 7* || *T4 Puerta 5*|| 🚪 
-Cuando recoja todo el equipaje de la cinta o este de camino al punto de encuentro nos tiene que llamar  *+34 919 237 378* ( *Llamada Normal* 📞,NO WHATSAPP). Gracias.
-(*Avisen si necesitan sillita para niño/bebe* 👶) """
+*T1:  Puerta 3* 🚪
+
+*T2: Puerta 7* 🚪
+
+*T4: Puerta 4-5* 🚪
+
+📦 Cuando recoja su equipaje o vaya al punto de encuentro, llámenos al *📞+34 919 23 73 78*
+(Solo llamada normal, *NO WhatsApp*)
+
+👶 Avísenos si necesita silla para niño/bebé.
+*!GRACIAS POR SU COLABORACION!* """
 
 #PLANTILLA PREMIUM
 PREMIUM= """Hola, le recordamos que en el día de mañana tiene una reserva en Go Barajas a las *{hora}* , se le recogerá el vehículo en la *Terminal* *{servicios}.* 
@@ -65,8 +71,7 @@ Gracias por su confianza. ¡Le esperamos!"""
 # Diccionario con todas las plantillas
 PLANTILLAS_DISPONIBLES = {
     "RecordatorioCita": CITA,
-    "RecogidaTardes": RECOGIDASTARDES,
-    "RecogidaMañana": RECOGIDAMANANA,
+    "Recogidas": RECOGIDAS,
     "PREMIUM": PREMIUM,
     "CitaMultiple": CITA_MULTIPLE
 }

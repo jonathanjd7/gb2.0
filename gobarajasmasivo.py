@@ -589,7 +589,7 @@ class WhatsAppSenderGUIMejorado:
             
             # Verificar si es una plantilla de recogida y mostrar información de columnas
             plantilla_actual = self.plantilla_actual.get()
-            if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            if plantilla_actual == "Recogidas":
                 self._mostrar_info_columnas_vuelo()
             
             self.contactos = self.obtener_contactos_con_telefono()
@@ -705,7 +705,7 @@ class WhatsAppSenderGUIMejorado:
             self.log_message("🇪🇸 Solo números españoles: HABILITADO")
         
         # Informar sobre la columna de teléfono según la plantilla
-        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+        if plantilla_actual == "Recogidas":
             self.log_message("📞 Plantilla de recogida detectada: Buscando números en columna 'Nº Vuelo VUELTA'")
         else:
             self.log_message("📞 Plantilla normal: Buscando números en columna 'NIF'")
@@ -752,8 +752,8 @@ class WhatsAppSenderGUIMejorado:
         
         # Determinar de qué columna extraer el teléfono según la plantilla seleccionada
         plantilla_actual = self.plantilla_actual.get()
-        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
-            # Para plantillas de recogida, buscar en "Nº Vuelo VUELTA"
+        if plantilla_actual == "Recogidas":
+            # Para plantilla de recogidas, buscar en "Nº Vuelo VUELTA"
             # Asumiendo que está en una posición específica del formato especial
             # Buscar en todas las columnas que contengan "VUELTA" o números de vuelo
             nif_campo = ""
@@ -795,8 +795,8 @@ class WhatsAppSenderGUIMejorado:
         
         # Determinar de qué columna extraer el teléfono según la plantilla seleccionada
         plantilla_actual = self.plantilla_actual.get()
-        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
-            # Para plantillas de recogida, buscar en "Nº Vuelo VUELTA"
+        if plantilla_actual == "Recogidas":
+            # Para plantilla de recogidas, buscar en "Nº Vuelo VUELTA"
             nif_campo = ""
             
             # Buscar columnas que contengan "VUELTA" o "VUELO"
@@ -1036,7 +1036,7 @@ class WhatsAppSenderGUIMejorado:
         
         # Mostrar información sobre la columna de teléfono según la plantilla
         plantilla_actual = self.plantilla_actual.get()
-        if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+        if plantilla_actual == "Recogidas":
             self.log_message(f"📝 Plantilla cargada: {self.plantilla_actual.get()} (Recogida)")
             self.log_message("📞 Configuración: Buscando números en columna 'Nº Vuelo VUELTA'")
         else:
@@ -2468,7 +2468,7 @@ class WhatsAppSenderGUIMejorado:
                                        font=("Segoe UI", 12, "bold"), bg="#ffffff")
             config_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
             
-            if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+            if plantilla_actual == "Recogidas":
                 config_text = """📞 COLUMNA PRINCIPAL: 'Nº Vuelo VUELTA'
 • Busca automáticamente columnas que contengan 'VUELTA' o 'VUELO'
 • Extrae solo los números del campo
@@ -2516,7 +2516,7 @@ class WhatsAppSenderGUIMejorado:
                     archivo_info = f"Archivo: {os.path.basename(self.excel_path.get())}\n"
                     archivo_info += f"Total columnas: {len(columnas_disponibles)}\n"
                     
-                    if plantilla_actual in ["RecogidaTardes", "RecogidaMañana"]:
+                    if plantilla_actual == "Recogidas":
                         if columnas_vuelo:
                             archivo_info += f"✅ Columnas de vuelo encontradas: {', '.join(columnas_vuelo)}\n"
                         else:

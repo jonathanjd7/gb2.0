@@ -128,9 +128,26 @@ Mensaje estándar para recordatorios de reserva individual.
 ### Plantilla Múltiple (CitaMultiple)
 Específica para contactos consolidados con múltiples vehículos.
 
-### Plantillas de Recogida
-- **RecogidaMañana**: Para recogidas matutinas
-- **RecogidaTardes**: Para recogidas vespertinas
+### Plantilla de Recogidas
+**NUEVA FUNCIONALIDAD**: Busca automáticamente números de teléfono en la columna **"Nº Vuelo VUELTA"** en lugar de la columna "NIF".
+
+#### 🔧 Cómo Funciona la Plantilla "Recogidas":
+1. **Columna Principal**: Busca automáticamente columnas que contengan "VUELTA" o "VUELO" en el nombre
+2. **Extracción de Números**: Extrae solo los dígitos del campo encontrado
+3. **Validación**: Requiere mínimo 9 dígitos para ser considerado un número válido
+4. **Respaldo**: Si no encuentra columna de vuelo o el número no es válido, usa la columna "NIF"
+
+#### 📊 Formato de Archivo Excel para Recogidas:
+```
+| Cliente | NIF | Nº Vuelo VUELTA | Matricula | Hora entrada | Fecha entrada |
+|---------|-----|-----------------|-----------|--------------|---------------|
+| Juan    | 123 | 612345678       | ABC123    | 14:30        | 2024-01-15    |
+```
+
+#### 🎮 Uso de la Plantilla "Recogidas":
+1. **Seleccionar plantilla**: Elegir "Recogidas" en el selector
+2. **Analizar datos**: El sistema detectará automáticamente columnas de vuelo
+3. **Ver información**: Usar botón "📋 Info Columnas" para ver configuración
 
 ### Plantilla Premium
 Para servicios premium con recogida en terminal.
@@ -146,6 +163,12 @@ Para servicios premium con recogida en terminal.
 - Nivel de logging configurable (DEBUG, INFO, WARNING, ERROR)
 - Logging a archivo opcional
 - Información detallada de errores
+
+### Problemas con Plantilla "Recogidas"
+1. **Verificar nombres de columnas**: Asegurar que contengan "VUELTA" o "VUELO"
+2. **Revisar formato de números**: Los números deben tener al menos 9 dígitos
+3. **Usar botón "Info Columnas"**: Para diagnosticar problemas de configuración
+4. **Revisar logs**: Para información detallada sobre el proceso
 
 ## 📄 Licencia
 Este proyecto está bajo la Licencia MIT. Ver archivo LICENSE para más detalles.
