@@ -4,8 +4,8 @@
 # Plantilla PRINCIPAL de GO BARAJAS
 CITA= """Hola *{nombre}* 😁,
 
-Le recordamos que tiene una reserva en *GO BARAJAS* para el día de *mañana* a las *{hora}h*.
-Matrícula registrada: *{matricula}*
+Le recordamos que tiene una reserva en *GO BARAJAS* para el día de *mañana* a las *{hora}h*⌚.
+🚗 Matrícula registrada: *{matricula}*
 👥 Número de ocupantes: *{ocupantes}*
 
 📆 Por favor, confirme su asistencia respondiendo a este mensaje.
@@ -26,6 +26,7 @@ Gracias por su confianza. ¡Le esperamos!"""
 RECOGIDAS= """Hola 👋,
 Hoy les *RECOGEMOS* en:
 *PLATAFORMA DE SALIDAS*
+FACTURACION - (PLANTA 2)
 
 *T1:  Puerta 3* 🚪
 
@@ -40,7 +41,7 @@ Hoy les *RECOGEMOS* en:
 *!GRACIAS POR SU COLABORACION!* """
 
 #PLANTILLA PREMIUM
-PREMIUM= """Hola, le recordamos que en el día de mañana tiene una reserva en Go Barajas a las *{hora}* , se le recogerá el vehículo en la *Terminal* *{servicios}.* 
+PREMIUM= """Hola, le recordamos que en el día de *mañana* tiene una reserva en Go Barajas a las *{hora}*⌚ , se le recogerá el vehículo en la *Terminal* *{servicios}.* 
 El día de su reserva llámenos 20 - 15 minutos antes de llegar a la Terminal desde la que viaja y en la plataforma de "SALIDAS", uno de nuestros chóferes adecuadamente identificado (chaleco amarillo y logotipo de nuestra empresa) recogerá su coche.
 Adjuntamos nuestro teléfono *+34 919 237 378* . 
 Muchas gracias 🙂  """
@@ -48,7 +49,7 @@ Muchas gracias 🙂  """
 #PLANTILLA PARA MÚLTIPLES VEHÍCULOS (CONSOLIDADA)
 CITA_MULTIPLE= """Hola *{nombre}* 😁
 
-Le recordamos que tiene *{reservas_count} reservas* en *GO BARAJAS* para el día de *mañana* a las *{hora}h*.
+Le recordamos que tiene *{reservas_count} reservas* en *GO BARAJAS* para el día de *mañana* a las *{hora}h*⌚.
 
 🚗 *Vehículos registrados:*
 {matricula}
