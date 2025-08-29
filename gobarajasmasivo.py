@@ -42,6 +42,12 @@ TIMEOUT_FIRST_CONTACT = 15
 TIMEOUT_BETWEEN_MESSAGES_MIN = 20
 TIMEOUT_BETWEEN_MESSAGES_MAX = 25
 
+# Constantes para robustez y recuperación
+MAX_REINTENTOS_MENSAJE = 3
+TIMEOUT_VERIFICACION_SESION = 10
+INTERVALO_VERIFICACION_SESION = 5  # Verificar cada 5 mensajes
+TIEMPO_ESPERA_RECUPERACION = 30
+
 # Constantes de filtros
 TIPOS_PLAZA_EXCLUIDOS = ['PREMIUM', 'SUPERIOR']
 MIN_COLUMNAS_FORMATO_ESPECIAL = 6
@@ -1436,7 +1442,7 @@ class WhatsAppSenderGUIMejorado:
                 break
             
             try:
-                resultado = self._enviar_mensaje_contacto(driver, contacto, i)
+                resultado = self.enviar_mensaje_con_reintentos(driver, contacto, i)
                 if resultado:
                     enviados += 1
                 else:
@@ -1475,7 +1481,7 @@ class WhatsAppSenderGUIMejorado:
         # Borrar progreso al completar
         self.borrar_progreso()
     
-    def _enviar_mensaje_contacto(self, driver, contacto, indice):
+    def _enviar_mensaje_contacto_original(self, driver, contacto, indice, intento=1):
         """Enviar mensaje a un contacto específico"""
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
@@ -1575,6 +1581,213 @@ class WhatsAppSenderGUIMejorado:
         
         # Por defecto, agregar 34 (España)
         return f"+34{telefono_limpio}"
+    
+    def verificar_estado_sesion(self, driver):
+        """Verificar si la sesión de WhatsApp Web sigue activa"""
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        import time
+        
+        try:
+            self.log_message("🔍 Verificando estado de sesión...")
+            
+            # Verificar si el panel lateral existe (indicador de sesión activa)
+            wait = WebDriverWait(driver, TIMEOUT_VERIFICACION_SESION)
+            chat_list = wait.until(EC.presence_of_element_located((By.ID, "pane-side")))
+            
+            # Verificar si hay elementos adicionales que confirmen la sesión
+            try:
+                # Verificar que podemos encontrar el campo de búsqueda
+                search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
+                self.log_message("✅ Sesión verificada correctamente")
+                return True
+            except:
+                self.log_message("⚠️ Sesión parcialmente activa")
+                return True
+                
+        except Exception as e:
+            self.log_message(f"❌ Sesión perdida o inactiva: {str(e)}")
+            return False
+    
+    def intentar_recuperar_sesion(self, driver, intento=1):
+        """Intentar recuperar la sesión de WhatsApp Web con estrategia escalonada"""
+        self.log_message(f"🔄 Intentando recuperar sesión (intento {intento}/3)...")
+        
+        try:
+            # Verificar conexión de red primero
+            if not self.verificar_conexion_red(driver):
+                self.log_message("❌ Sin conexión a internet")
+                return False
+            
+            # Estrategia escalonada de recuperación
+            if intento == 1:
+                # Primer intento: solo refrescar
+                self.log_message("    🔄 Refrescando WhatsApp Web...")
+                driver.refresh()
+                time.sleep(10)
+                
+            elif intento == 2:
+                # Segundo intento: limpiar caché y refrescar
+                self.log_message("    🧹 Limpiando caché y refrescando...")
+                driver.execute_script("window.location.reload(true);")  # Hard refresh
+                time.sleep(15)
+                
+            else:
+                # Tercer intento: limpieza completa de sesión
+                self.log_message("    🧹 Limpieza completa de sesión...")
+                self.limpiar_sesion_whatsapp(driver)
+                
+            # Intentar reconectar con timeout dinámico
+            timeout_dinamico = self.calcular_timeout_dinamico(intento)
+            self.log_message(f"    ⏳ Usando timeout dinámico de {timeout_dinamico}s...")
+            
+            # Guardar el timeout anterior y usar el dinámico
+            timeout_original = TIMEOUT_WHATSAPP_CONNECTION
+            globals()['TIMEOUT_WHATSAPP_CONNECTION'] = timeout_dinamico
+            
+            try:
+                self._conectar_whatsapp(driver)
+                globals()['TIMEOUT_WHATSAPP_CONNECTION'] = timeout_original
+                self.log_message("✅ Sesión recuperada exitosamente")
+                return True
+            except:
+                globals()['TIMEOUT_WHATSAPP_CONNECTION'] = timeout_original
+                raise
+                
+        except Exception as e:
+            self.log_message(f"❌ No se pudo recuperar la sesión en intento {intento}: {str(e)}")
+            
+            # Si hay más intentos disponibles, intentar de nuevo
+            if intento < 3:
+                time.sleep(min(intento * 10, 30))  # Esperar más tiempo entre intentos
+                return self.intentar_recuperar_sesion(driver, intento + 1)
+            
+            return False
+    
+    def enviar_mensaje_con_reintentos(self, driver, contacto, indice):
+        """Enviar mensaje con sistema de reintentos automáticos"""
+        intentos = 0
+        
+        while intentos < MAX_REINTENTOS_MENSAJE:
+            intentos += 1
+            
+            # Verificar sesión cada cierto número de mensajes
+            if indice % INTERVALO_VERIFICACION_SESION == 0:
+                if not self.verificar_estado_sesion(driver):
+                    if not self.intentar_recuperar_sesion(driver):
+                        self.log_message("❌ No se pudo recuperar la sesión. Deteniendo envío.")
+                        return False
+            
+            try:
+                self.log_message(f"📤 [{indice+1}/{len(self.contactos)}] Intento {intentos}/{MAX_REINTENTOS_MENSAJE} - {contacto['nombre']}")
+                
+                if self._enviar_mensaje_contacto_original(driver, contacto, indice, intentos):
+                    return True
+                    
+            except Exception as e:
+                self.log_message(f"    ⚠️ Error en intento {intentos}: {str(e)}")
+                
+                if intentos < MAX_REINTENTOS_MENSAJE:
+                    tiempo_espera = min(intentos * 5, TIEMPO_ESPERA_RECUPERACION)
+                    self.log_message(f"    ⏳ Esperando {tiempo_espera}s antes del siguiente intento...")
+                    time.sleep(tiempo_espera)
+                    
+                    # Verificar y recuperar sesión si es necesario
+                    if not self.verificar_estado_sesion(driver):
+                        if not self.intentar_recuperar_sesion(driver):
+                            break
+        
+        self.log_message(f"❌ Falló después de {MAX_REINTENTOS_MENSAJE} intentos: {contacto['nombre']}")
+        return False
+    
+    def limpiar_sesion_whatsapp(self, driver):
+        """Limpiar completamente la sesión de WhatsApp para forzar reconexión"""
+        self.log_message("🧹 Limpiando sesión de WhatsApp...")
+        
+        try:
+            # Limpiar cookies y storage
+            driver.delete_all_cookies()
+            
+            # Limpiar localStorage y sessionStorage
+            driver.execute_script("window.localStorage.clear();")
+            driver.execute_script("window.sessionStorage.clear();")
+            
+            # Limpiar caché del navegador si es posible
+            driver.execute_script("""
+                if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                        names.forEach(function(name) {
+                            caches.delete(name);
+                        });
+                    });
+                }
+            """)
+            
+            self.log_message("✅ Sesión limpiada. Será necesario escanear QR nuevamente")
+            time.sleep(5)  # Esperar a que se complete la limpieza
+            
+        except Exception as e:
+            self.log_message(f"⚠️ Error limpiando sesión: {str(e)}")
+    
+    def calcular_timeout_dinamico(self, intento, base_timeout=15):
+        """Calcular timeout dinámico basado en el número de intento y condiciones"""
+        # Incrementar timeout con cada intento
+        timeout = base_timeout + (intento * 5)
+        
+        # Máximo timeout de 45 segundos
+        return min(timeout, 45)
+    
+    def verificar_conexion_red(self, driver):
+        """Verificar si hay conexión a internet y a WhatsApp Web"""
+        try:
+            # Verificar conectividad general
+            driver.execute_script("return navigator.onLine")
+            
+            # Verificar si WhatsApp Web responde
+            response = driver.execute_script("""
+                return fetch('https://web.whatsapp.com', {method: 'HEAD', mode: 'no-cors'})
+                    .then(() => true)
+                    .catch(() => false);
+            """)
+            
+            return True
+        except:
+            return False
+    
+    def monitorear_estado_whatsapp(self, driver):
+        """Monitorear continuamente el estado de WhatsApp y detectar desconexiones"""
+        try:
+            # Verificar elementos críticos de WhatsApp Web
+            elementos_criticos = [
+                ('//div[@id="pane-side"]', 'Panel lateral'),
+                ('//div[@data-testid="chat-list"]', 'Lista de chats'),
+            ]
+            
+            for xpath, nombre in elementos_criticos:
+                try:
+                    driver.find_element("xpath", xpath)
+                except:
+                    self.log_message(f"⚠️ Elemento crítico no encontrado: {nombre}")
+                    return False
+            
+            # Verificar que no hay mensajes de error de WhatsApp
+            try:
+                error_elements = driver.find_elements("xpath", '//*[contains(text(), "Phone not connected")]')
+                error_elements.extend(driver.find_elements("xpath", '//*[contains(text(), "Computer not connected")]'))
+                
+                if error_elements:
+                    self.log_message("❌ Detectado mensaje de desconexión de WhatsApp")
+                    return False
+                    
+            except:
+                pass
+            
+            return True
+            
+        except Exception as e:
+            self.log_message(f"⚠️ Error monitoreando estado: {str(e)}")
+            return False
     
     def limpiar_caracteres_unicode(self, texto):
         """Limpiar caracteres Unicode problemáticos para ChromeDriver preservando formato y emojis"""
