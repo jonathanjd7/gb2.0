@@ -2,13 +2,13 @@
 # Archivo con plantillas predefinidas que puedes usar o modificar
 
 # Plantilla PRINCIPAL de GO BARAJAS
-CITA= """Hola *{nombre}* 😁,
+CITA= """Hola *{nombre}* 👋🏼,
 
 Le recordamos que tiene una reserva en *GO BARAJAS* para el día de *mañana* a las *{hora}h*⌚.
 🚗 Matrícula registrada: *{matricula}*
-👥 Número de ocupantes: *{ocupantes}*
+🧑‍🧑‍🧒 Número de ocupantes: *{ocupantes}*
 
-📆 Por favor, confirme su asistencia respondiendo a este mensaje.
+🗓️ Por favor, confirme su asistencia respondiendo a este mensaje.
 *(Avísenos si viene con alguna mascota 🐶😼)*
 
 📍 Dirección: Ver ubicación en Google Maps:
@@ -19,22 +19,21 @@ https://goo.gl/maps/bH9XgxPZE4ze8Yaf9
 📞 Teléfono de contacto: *+34 919 23 73 78*
 Le recomendamos guardarlo en su agenda.
 
-Gracias por su confianza. ¡Le esperamos!"""
+Gracias por su confianza. ¡Le esperamos! 🚐🛫"""
 
 
 
 RECOGIDAS= """Hola 👋,
-Hoy les *RECOGEMOS* en:
-*PLATAFORMA DE SALIDAS*
-FACTURACION - (PLANTA 2)
+Hoy les *RECOGEMOS* en: *PLATAFORMA DE SALIDAS*
+FACTURACION 🚏
 
-*T1:  Puerta 3* 🚪
+*T1:  Planta 1 - Puerta 3* 🚪
 
-*T2: Puerta 7* 🚪
+*T2: Planta 2 - Puerta 7* 🚪
 
-*T4: Puerta 4-5* 🚪
+*T4: Planta 2 - Puertas 4-5* 🚪
 
-📦 Cuando recoja su equipaje o vaya al punto de encuentro, llámenos al *📞+34 919 23 73 78*
+🛄🧳 Cuando recoja su equipaje o vaya al punto de encuentro, llámenos al *📞+34 919 23 73 78*
 (Solo llamada normal, *NO WhatsApp*)
 
 👶 Avísenos si necesita silla para niño/bebé.
@@ -47,7 +46,7 @@ Adjuntamos nuestro teléfono *+34 919 237 378* .
 Muchas gracias 🙂  """
 
 #PLANTILLA PARA MÚLTIPLES VEHÍCULOS (CONSOLIDADA)
-CITA_MULTIPLE= """Hola *{nombre}* 😁
+CITA_MULTIPLE= """Hola *{nombre}* 👋🏼,
 
 Le recordamos que tiene *{reservas_count} reservas* en *GO BARAJAS* para el día de *mañana* a las *{hora}h*⌚.
 
@@ -67,7 +66,7 @@ https://goo.gl/maps/bH9XgxPZE4ze8Yaf9
 📞 Teléfono de contacto: *+34 919 23 73 78*
 Le recomendamos guardarlo en su agenda.
 
-Gracias por su confianza. ¡Le esperamos!"""
+Gracias por su confianza. ¡Le esperamos! 🚐🛫"""
 
 # Diccionario con todas las plantillas
 PLANTILLAS_DISPONIBLES = {
